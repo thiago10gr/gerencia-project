@@ -1,0 +1,198 @@
+﻿@model Projeto.Apresentacao.Areas.AreaRestrita.Models.UsuarioViewModelPerfil
+
+@{
+    ViewBag.Title = "Perfil";
+    ViewBag.Titulo = "Meu Perfil";
+    Layout = "~/Areas/AreaRestrita/Views/Shared/Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#menu1">Menu 1</a></li>
+        <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+    </ul>
+
+
+    <div class="tab-content">
+
+        <div id="menu1" class="tab-pane fade in active">
+
+            <div class="row">
+
+                <br />
+
+                <div class="col-md-4">
+
+                    @Html.LabelFor(model => model.Nome)
+                    @Html.TextBoxFor(model => model.Nome,
+                     new
+                     {
+                         @class = "form-control",
+                         @placeholder = "Digite aqui"
+                     })
+
+                    <br />
+
+                    @Html.LabelFor(model => model.Email)
+                    @Html.TextBoxFor(model => model.Email,
+                     new
+                     {
+                         @class = "form-control",
+                         @placeholder = "Digite aqui"
+                     })
+
+                    <br />
+
+                    @Html.LabelFor(model => model.DataCadastro, "Data de Cadastro")
+                    @Html.TextBoxFor(model => model.DataCadastro,
+                     new
+                     {
+                         @class = "form-control",
+                         @readonly = "readonly"
+                     })
+
+                    <br />
+
+                    @Html.LabelFor(model => model.Telefone)
+                    @Html.TextBoxFor(model => model.Telefone,
+                     new
+                     {
+                         @class = "form-control fone",
+                         @placeholder = "Digite aqui"
+                     })
+
+                    <br />
+
+                    @Html.LabelFor(model => model.Celular)
+                    @Html.TextBoxFor(model => model.Celular,
+                     new
+                     {
+                         @class = "form-control fone",
+                         @placeholder = "Digite aqui"
+                     })
+
+                    <br />
+
+                </div>
+
+
+
+                <div class="col-md-4">
+
+
+                    @Html.LabelFor(model => model.Ativo)
+                    @Html.EnumDropDownListFor(model => model.Ativo,
+                     "- Escolha uma Opção -",
+                     new
+                     {
+                         @class = "form-control"
+                     })
+
+
+                    <br />
+
+
+                    @Html.LabelFor(model => model.Perfil)
+                    @Html.EnumDropDownListFor(model => model.Perfil,
+                     "- Escolha uma Opção -",
+                     new
+                     {
+                         @class = "form-control"
+                     })
+
+
+                    <br />
+
+
+                    @Html.LabelFor(model => model.IdGrupo)
+                    @Html.DropDownListFor(model => model.IdGrupo,
+                         Model.ListagemGrupos,
+                         "- Escolha uma Opção -",
+                         new
+                         {
+                             @class = "form-control"
+                         })
+
+                    <br />
+
+
+
+                    @Html.LabelFor(model => model.Senha)
+                    @Html.PasswordFor(model => model.Senha,
+                     new
+                     {
+                         @class = "form-control"
+                     })
+
+                    <br />
+
+                    @Html.LabelFor(model => model.ReSenha, "Repita a senha")
+                    @Html.PasswordFor(model => model.ReSenha,
+                     new
+                     {
+                         @class = "form-control"
+                     })
+
+                    <br />
+
+
+                    @Html.HiddenFor(model => model.IdUsuario)
+
+
+                </div>
+            </div>
+
+        </div> <!-- fim do menu 1 -->
+
+
+
+        <div id="menu2" class="tab-pane fade">
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nome do Projeto</th>
+                        <th>Data de Inicio</th>
+                        <th>Data de Termino</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ListagemProjetos)
+                {
+                    string selecionado = item.Selecionado ? "checked" : string.Empty;
+
+
+                    string dataInicio = item.DataInicio.HasValue ? item.DataInicio.Value.ToString("dd/MM/yyyy HH:mm:ss") : "n/d";
+                    string dataFim = item.DataFim.HasValue ? item.DataFim.Value.ToString("dd/MM/yyyy HH:mm:ss") : "n/d";
+
+                        <tr>
+                            <td> <input type="checkbox" name="projetos" value="@item.IdProjeto" @selecionado /> </td>
+                            <td>@item.Nome</td>
+                            <td>@dataInicio</td>
+                            <td>@dataFim</td>
+                            <td>@item.Status</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </div> <!-- fim do menu 2 -->
+
+
+
+    </div> <!-- fim do tab-content -->
+
+    <br />
+
+    <div class="row">
+        <div class="col-md-4">
+            <input type="submit" value="Salvar" class="btn btn-primary" />
+        </div>
+    </div>
+
+}
