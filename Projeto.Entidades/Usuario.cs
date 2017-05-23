@@ -21,7 +21,7 @@ namespace Projeto.Entidades
         public string Celular { get; set; }
         public SimNao Ativo { get; set; }
         public Perfil Perfil { get; set; }
-        public byte? Foto { get; set; }
+        public byte[] Foto { get; set; }
 
         public int IdGrupo { get; set; }
 
@@ -37,7 +37,8 @@ namespace Projeto.Entidades
 
         }
 
-        public Usuario(int idUsuario, string nome, string email, DateTime dataCadastro, string telefone, string celular, SimNao ativo, Perfil perfil, byte foto)
+        public Usuario(int idUsuario, string nome, string email, DateTime dataCadastro, 
+            string telefone, string celular, SimNao ativo, Perfil perfil, byte[] foto)
         {
             IdUsuario = idUsuario;
             Nome = nome;

@@ -6,7 +6,8 @@
     Layout = "~/Areas/AreaRestrita/Views/Shared/Layout.cshtml";
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Perfil", "Usuario", FormMethod.Post, 
+                                                new { @enctype = "multipart/form-data" }))
 {
 
     <ul class="nav nav-tabs">
@@ -18,133 +19,162 @@
     <div class="tab-content">
 
         <div id="menu1" class="tab-pane fade in active">
-
+            
             <div class="row">
 
-                <br />
-
                 <div class="col-md-4">
+                    
+                    <br />
+                    <br />
+                   
+                     @if (Model.Avatar != null)
+                    {
 
-                    @Html.LabelFor(model => model.Nome)
-                    @Html.TextBoxFor(model => model.Nome,
+                        var base64 = Convert.ToBase64String(Model.Avatar);
+                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+                        <div align="center">
+                            <img id="image-upload" src="@imgSrc" alt="image-upload" width="80" height="80" class="img-circle" />
+                        </div>
+
+                    }
+                    else
+                    {
+
+                        <div align="center">
+                            <img id="image-upload" src="@Url.Content("~/pessoal/imagens/semimagem.jpg")" alt="image-upload"
+                                 width="80" height="80" class="img-circle" />
+                        </div>
+
+                    }
+
+                    <br />
+                    <br />
+
+                </div>
+            </div>
+
+
+           <div class="row">
+
+                 <div class="col-md-4">
+                       
+                     @Html.LabelFor(model => model.Foto)
+                     <input id="file-upload" type="file" name="Foto" class="form-control" />
+
+                     <br />
+
+                     @Html.LabelFor(model => model.Nome)
+                     @Html.TextBoxFor(model => model.Nome,
                      new
                      {
                          @class = "form-control",
                          @placeholder = "Digite aqui"
                      })
 
-                    <br />
+                     <br />
 
-                    @Html.LabelFor(model => model.Email)
-                    @Html.TextBoxFor(model => model.Email,
+                     @Html.LabelFor(model => model.Email)
+                     @Html.TextBoxFor(model => model.Email,
                      new
                      {
                          @class = "form-control",
                          @placeholder = "Digite aqui"
                      })
 
-                    <br />
+                     <br />
 
-                    @Html.LabelFor(model => model.DataCadastro, "Data de Cadastro")
-                    @Html.TextBoxFor(model => model.DataCadastro,
+                     @Html.LabelFor(model => model.Telefone)
+                     @Html.TextBoxFor(model => model.Telefone,
+                     new
+                     {
+                         @class = "form-control sp_celphones",
+                         @placeholder = "Digite aqui"
+                     })
+
+                     <br />
+
+                     @Html.LabelFor(model => model.Celular)
+                     @Html.TextBoxFor(model => model.Celular,
+                     new
+                     {
+                         @class = "form-control sp_celphones",
+                         @placeholder = "Digite aqui"
+                     })
+
+                     <br />
+
+                     @Html.LabelFor(model => model.DataCadastro, "Data de Cadastro")
+                     @Html.TextBoxFor(model => model.DataCadastro,
                      new
                      {
                          @class = "form-control",
                          @readonly = "readonly"
                      })
 
-                    <br />
-
-                    @Html.LabelFor(model => model.Telefone)
-                    @Html.TextBoxFor(model => model.Telefone,
-                     new
-                     {
-                         @class = "form-control fone",
-                         @placeholder = "Digite aqui"
-                     })
-
-                    <br />
-
-                    @Html.LabelFor(model => model.Celular)
-                    @Html.TextBoxFor(model => model.Celular,
-                     new
-                     {
-                         @class = "form-control fone",
-                         @placeholder = "Digite aqui"
-                     })
-
-                    <br />
+                     <br />
 
                 </div>
 
 
-
                 <div class="col-md-4">
 
-
-                    @Html.LabelFor(model => model.Ativo)
-                    @Html.EnumDropDownListFor(model => model.Ativo,
+         
+                     @Html.LabelFor(model => model.Ativo)
+                     @Html.EnumDropDownListFor(model => model.Ativo,
                      "- Escolha uma Opção -",
                      new
                      {
                          @class = "form-control"
                      })
 
-
                     <br />
 
-
-                    @Html.LabelFor(model => model.Perfil)
-                    @Html.EnumDropDownListFor(model => model.Perfil,
+                     @Html.LabelFor(model => model.Perfil)
+                     @Html.EnumDropDownListFor(model => model.Perfil,
                      "- Escolha uma Opção -",
                      new
                      {
                          @class = "form-control"
                      })
 
+                     <br />
 
-                    <br />
-
-
-                    @Html.LabelFor(model => model.IdGrupo)
-                    @Html.DropDownListFor(model => model.IdGrupo,
-                         Model.ListagemGrupos,
+                      @Html.LabelFor(model => model.IdGrupo)
+                      @Html.DropDownListFor(model => model.IdGrupo,
+                      Model.ListagemGrupos,
                          "- Escolha uma Opção -",
                          new
                          {
                              @class = "form-control"
                          })
 
-                    <br />
+                     <br />
 
-
-
-                    @Html.LabelFor(model => model.Senha)
-                    @Html.PasswordFor(model => model.Senha,
+                     @Html.LabelFor(model => model.Senha)
+                     @Html.PasswordFor(model => model.Senha,
                      new
                      {
                          @class = "form-control"
                      })
 
-                    <br />
+                     <br />
 
-                    @Html.LabelFor(model => model.ReSenha, "Repita a senha")
-                    @Html.PasswordFor(model => model.ReSenha,
+                     @Html.LabelFor(model => model.ReSenha, "Repita a senha")
+                     @Html.PasswordFor(model => model.ReSenha,
                      new
                      {
                          @class = "form-control"
                      })
 
-                    <br />
+                     <br />
 
+                     @Html.HiddenFor(model => model.IdUsuario)
 
-                    @Html.HiddenFor(model => model.IdUsuario)
-
-
+                    </div>
                 </div>
-            </div>
 
-        </div> <!-- fim do menu 1 -->
+            </div> <!-- fim do menu 1 -->
 
 
 
@@ -163,7 +193,7 @@
                 <tbody>
                     @foreach (var item in Model.ListagemProjetos)
                 {
-                    string selecionado = item.Selecionado ? "checked" : string.Empty;
+                    string selecionado = (item.Selecionado != null && item.Selecionado == true) ? "checked" : string.Empty;
 
 
                     string dataInicio = item.DataInicio.HasValue ? item.DataInicio.Value.ToString("dd/MM/yyyy HH:mm:ss") : "n/d";

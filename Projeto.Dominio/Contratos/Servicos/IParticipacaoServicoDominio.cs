@@ -13,5 +13,7 @@ namespace Projeto.Dominio.Contratos.Servicos
         bool RegistroExistente(int idProjeto, int idUsuario);
 
         List<Participacao> ListarPorUsuario(int idUsuario);
+
+        
     }
 }

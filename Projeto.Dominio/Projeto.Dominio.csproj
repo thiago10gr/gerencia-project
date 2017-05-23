@@ -53,8 +53,7 @@
     <Compile Include="Contratos\Servicos\IParticipacaoServicoDominio.cs" />
     <Compile Include="Contratos\Servicos\IProjetoServicoDominio.cs" />
     <Compile Include="Contratos\Servicos\IUsuarioServicoDominio.cs" />
-    <Compile Include="Excecoes\AcessoNegado.cs" />
-    <Compile Include="Excecoes\AutenticacaoInvalida.cs" />
+    <Compile Include="Excecoes\CustomException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicos\AreaServicoDominio.cs" />
     <Compile Include="Servicos\BaseServicoDominio.cs" />

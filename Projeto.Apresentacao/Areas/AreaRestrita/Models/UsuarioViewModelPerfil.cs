@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using System.ComponentModel.DataAnnotations;
 using Projeto.Entidades.Tipos;
 using System.Web.Mvc;
-using Projeto.Entidades;
-using Projeto.Aplicacao.Contratos;
+using System.ComponentModel.DataAnnotations;
+using Projeto.Apresentacao.Areas.AreaRestrita.Validators;
 
 namespace Projeto.Apresentacao.Areas.AreaRestrita.Models
 {
     public class UsuarioViewModelPerfil
     {
 
+        [UploadFotoValidator(ErrorMessage = "Por favor, envie apenas imagens jpg de até 50Kb.")]
+        [Display(Name = "Foto")]
+        public HttpPostedFileBase Foto { get; set; }
+
+        [Display(Name = "Foto")]
+        public byte[] Avatar { get; set; }
 
         [Required(ErrorMessage = "Informe o ID do usuário")]
         public int IdUsuario { get; set; }
@@ -27,9 +32,8 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Models
         [Required(ErrorMessage = "Informe o senha")]
         public string Senha { get; set; }
         
-        [System.ComponentModel.DataAnnotations.Compare("Senha", ErrorMessage = "As senhas não conferem.")]
         [Required(ErrorMessage = "Repita a senha")]
-
+        [System.ComponentModel.DataAnnotations.Compare("Senha", ErrorMessage = "As senhas não conferem.")]
         public string ReSenha { get; set; }
 
         [Required(ErrorMessage = "Informe se está ativo ou não")]

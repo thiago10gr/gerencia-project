@@ -29,5 +29,7 @@ namespace Projeto.Dominio.Servicos
         {
             return repositorio.ListarPorUsuario(idUsuario);
         }
+
+       
     }
 }

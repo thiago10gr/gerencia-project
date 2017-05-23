@@ -166,6 +166,11 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="pessoal\imagens\not-available.jpg" />
+    <Content Include="pessoal\imagens\semimagem.jpg" />
+    <Content Include="pessoal\scripts\jquery.mask.js" />
+    <Content Include="pessoal\scripts\scripts.js" />
+    <Content Include="pessoal\styles\styles.css" />
     <Content Include="scripts\ai.0.15.0-build58334.js" />
     <Content Include="scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -190,6 +195,7 @@
     <Content Include="Areas\AreaRestrita\Views\Usuario\Projetos.cshtml" />
     <Content Include="Areas\AreaRestrita\Views\Usuario\Funcionarios.cshtml" />
     <Content Include="Areas\AreaRestrita\Views\Usuario\Perfil.cshtml" />
+    <Content Include="pessoal\imagens\Thumbs.db" />
     <None Include="scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="scripts\arcnet.simple.mask.js" />
     <Content Include="scripts\arcnet.simple.mask.min.js" />
@@ -207,6 +213,7 @@
     <Compile Include="Areas\AreaRestrita\Models\UsuarioViewModelPerfil.cs" />
     <Compile Include="Areas\AreaRestrita\Security\PermissaoProvider.cs" />
     <Compile Include="Areas\AreaRestrita\Security\PermissoesFiltro.cs" />
+    <Compile Include="Areas\AreaRestrita\Validators\UploadFotoValidator.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

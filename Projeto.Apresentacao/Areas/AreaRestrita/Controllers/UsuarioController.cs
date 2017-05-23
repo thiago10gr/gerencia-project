@@ -8,6 +8,7 @@ using Projeto.Aplicacao.Contratos;
 using Projeto.Apresentacao.Areas.AreaRestrita.Security;
 using Projeto.Entidades;
 using Projeto.Apresentacao.Areas.AreaRestrita.Models;
+using System.IO;
 
 namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
 {
@@ -19,7 +20,8 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
         private readonly IProjetoAplicacao appProjeto;
         private readonly IParticipacaoAplicacao appParticipacao;
 
-        public UsuarioController(IUsuarioAplicacao appUsuario, IGrupoAplicacao appGrupo, IProjetoAplicacao appProjeto, IParticipacaoAplicacao appParticipacao)
+        public UsuarioController(IUsuarioAplicacao appUsuario, IGrupoAplicacao appGrupo, 
+            IProjetoAplicacao appProjeto, IParticipacaoAplicacao appParticipacao)
         {
             this.appUsuario = appUsuario;
             this.appGrupo = appGrupo;
@@ -52,10 +54,12 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
 
         private UsuarioViewModelPerfil CarregarDadosUsuario()
         {
+            //obtendo usuario da sessao
             Usuario usuarioSessao = (Usuario)Session["usuario"];
             Usuario u = appUsuario.ObterPorId(usuarioSessao.IdUsuario);
 
             UsuarioViewModelPerfil model = new UsuarioViewModelPerfil();
+
             model.ListagemGrupos = new List<SelectListItem>();
 
             model.IdUsuario = u.IdUsuario;
@@ -64,12 +68,12 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
             model.Telefone = u.Telefone;
             model.Celular = u.Celular;
             model.DataCadastro = u.DataCadastro;
-
+            model.Avatar = u.Foto;
             model.IdGrupo = u.IdGrupo;
             model.Ativo = u.Ativo;
             model.Perfil = u.Perfil;
 
-
+            //listar todos os grupos ativos
             foreach (Grupo g in appGrupo.ListarAtivos())
             {
                 SelectListItem item = new SelectListItem();
@@ -80,7 +84,7 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
                 model.ListagemGrupos.Add(item);
             }
 
-    
+            // para listar todos os projetos do sistema
             model.ListagemProjetos = new List<ProjetoViewModelConsulta>();
 
             foreach (var p in appProjeto.ListarTodos())
@@ -95,6 +99,7 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
                 });
             }
 
+            // seleciona os projetos em que o usuario logado esta participando
             foreach (var pa in appParticipacao.ListarPorUsuario(model.IdUsuario))
             {
                 var item = model.ListagemProjetos.FirstOrDefault(p => p.IdProjeto == pa.IdProjeto);
@@ -127,43 +132,32 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
                     u.Perfil = model.Perfil;
                     u.Senha = model.Senha;
 
-                    model.ListagemProjetos = new List<ProjetoViewModelConsulta>();
+                    u.Participacoes = new List<Participacao>();
 
-                    foreach (var p in appProjeto.ListarTodos())
+                    //verifica se foi selecionado algum projeto na tela de edicao de perfil
+                    if (Request.Form.GetValues("projetos") != null)
                     {
-                        model.ListagemProjetos.Add(new ProjetoViewModelConsulta()
-                        {
-                            IdProjeto = p.IdProjeto,
-                            Nome = p.Nome,
-                            DataInicio = p.DataInicio,
-                            DataFim = p.DataFim,
-                            Status = p.Status
-                        });
-                    }
 
-                    foreach (var projeto in model.ListagemProjetos)
-                    {
-                        Participacao pa = new Participacao()
+                        //obtendo os ids dos projetos selecionados na tela de perfil
+                        foreach (var idProjeto in Request.Form.GetValues("projetos"))
                         {
-                            IdUsuario = u.IdUsuario,
-                            IdProjeto = projeto.IdProjeto
-                        };
-
-                        if (appParticipacao.RegistroExistente(pa.IdProjeto, pa.IdUsuario))
-                        {
-                            appParticipacao.Excluir(pa);
-                        }
-                    }
-
-                    foreach (var idProjeto in Request.Form.GetValues("projetos"))
-                    {
-                        appParticipacao.Cadastrar(
+                            u.Participacoes.Add(
                                 new Participacao()
                                 {
                                     IdUsuario = u.IdUsuario,
                                     IdProjeto = int.Parse(idProjeto)
-                                }
-                            );
+                                });
+                        }
+                    }
+
+                    if (model.Foto != null && model.Foto.ContentLength > 0)
+                    {
+                        Stream stream = model.Foto.InputStream;
+                        byte[] appData = new byte[model.Foto.ContentLength + 1];
+                        stream.Read(appData, 0, model.Foto.ContentLength);
+                        u.Foto = appData;
+                        //para exibir na tela
+                        model.Avatar = u.Foto;
                     }
 
                     appUsuario.Atualizar(u);
@@ -171,7 +165,7 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
                     // Atualiza o Usuário na sessão
                     Session.Add("usuario", u);
 
-                    ViewBag.MsgSucesso = "Usuário atualizado com sucesso.";
+                    ViewBag.MsgSucesso = $"Usuário {u.Nome}, atualizado com sucesso.";
                 }
                 catch (Exception e)
                 {

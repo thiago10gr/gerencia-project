@@ -27,5 +27,11 @@ namespace Projeto.Infra.Repositorio.Repositorios
                           .ToList();
      
         }
+
+        public void ExcluirParticipacoes(Usuario u)
+        {
+            contexto.Participacao.RemoveRange(contexto.Participacao.Where(pa => pa.IdUsuario == u.IdUsuario));
+            contexto.SaveChanges();
+        }
     }
 }

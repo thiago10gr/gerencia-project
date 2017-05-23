@@ -24,7 +24,7 @@ namespace Projeto.Dominio.Servicos
 
 
 
-        public void Cadastrar(TEntity obj)
+        public virtual void Cadastrar(TEntity obj)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Projeto.Dominio.Servicos
 
 
 
-        public void Atualizar(TEntity obj)
+        public virtual void Atualizar(TEntity obj)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace Projeto.Dominio.Servicos
 
 
 
-        public void Excluir(TEntity obj)
+        public virtual void Excluir(TEntity obj)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace Projeto.Dominio.Servicos
 
 
 
-        public List<TEntity> ListarTodos()
+        public virtual List<TEntity> ListarTodos()
         {
             try
             {
@@ -92,7 +92,7 @@ namespace Projeto.Dominio.Servicos
 
 
 
-        public TEntity ObterPorId(TKey id)
+        public virtual TEntity ObterPorId(TKey id)
         {
             try
             {

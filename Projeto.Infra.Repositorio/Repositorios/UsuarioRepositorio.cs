@@ -26,5 +26,7 @@ namespace Projeto.Infra.Repositorio.Repositorios
             return contexto.Usuario.FirstOrDefault(u => u.Email.Equals(email));
         }
 
+
+     
     }
 }

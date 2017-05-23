@@ -8,38 +8,31 @@ using Projeto.Entidades;
 using Projeto.Dominio.Contratos.Servicos;
 using Projeto.Dominio.Contratos.Repositorios;
 using Projeto.Dominio.Contratos.Criptografia;
-using Projeto.Dominio.Excecoes;
+using Projeto.Web.Excecoes;
 
 namespace Projeto.Dominio.Servicos
 {
     public class UsuarioServicoDominio : BaseServicoDominio<Usuario, int>, IUsuarioServicoDominio
     {
-
-
-        private readonly IUsuarioRepositorio repositorio;
+        private readonly IUsuarioRepositorio uRep;
+        private readonly IParticipacaoRepositorio paRep;
         private readonly ICriptografiaUtil criptografia;
 
-
-
-
-        public UsuarioServicoDominio(IUsuarioRepositorio repositorio, ICriptografiaUtil criptografia)
-            : base(repositorio)
+        public UsuarioServicoDominio(IUsuarioRepositorio uRep, IParticipacaoRepositorio paRep, ICriptografiaUtil criptografia) 
+            : base(uRep)
         {
-            this.repositorio = repositorio;
+            this.uRep = uRep;
+            this.paRep = paRep;
             this.criptografia = criptografia;
         }
-
-
-
-
 
         public Usuario Autenticar(string email, string senha)
         {
             //criptografar a senha..
-           // senha = criptografia.EncriptarSenha(senha);
+            senha = criptografia.EncriptarSenha(senha);
             email = email.ToUpper();
 
-            Usuario u = repositorio.ObterPorEmailSenha(email, senha);
+            Usuario u = uRep.ObterPorEmailSenha(email, senha);
 
             if (u != null)
             {
@@ -47,10 +40,42 @@ namespace Projeto.Dominio.Servicos
             }
             else
             {
-                throw new AutenticacaoInvalida();
+                throw new CustomException("Login e/ou Senha inválido.");
             }
-
-
         }
+
+        //sobreescrevendo o atualizar
+        public override void Atualizar(Usuario u)
+        {
+            try
+            {
+                uRep.BeginTrasaction();
+
+                //Excluindo todos os projetos participados
+                paRep.ExcluirParticipacoes(u);
+
+                //Gravando selecionados
+                foreach (Participacao pa in u.Participacoes)
+                {
+                    paRep.Inserir(pa);
+                }
+
+                //Encriptografando a senha
+                u.Senha = criptografia.EncriptarSenha(u.Senha);
+
+
+                //Atualizando o cadastro
+                uRep.Atualizar(u);
+
+                uRep.Commit();
+            }
+            catch (Exception ex)
+            {
+                uRep.Rollback();
+                throw new Exception(ex.Message);
+            }
+        }
+       
+       
     }
 }

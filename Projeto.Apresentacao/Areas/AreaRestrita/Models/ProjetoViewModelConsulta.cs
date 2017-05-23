@@ -9,7 +9,7 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Models
 {
     public class ProjetoViewModelConsulta
     {
-        public bool Selecionado { get; set; }
+        public Nullable<bool>Selecionado { get; set; }
         public int IdProjeto { get; set; }
         public string Nome { get; set; }
         public Nullable<DateTime> DataInicio { get; set; } //Pode estar nulo    
