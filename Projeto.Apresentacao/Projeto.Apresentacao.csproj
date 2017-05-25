@@ -196,6 +196,10 @@
     <Content Include="Areas\AreaRestrita\Views\Usuario\Funcionarios.cshtml" />
     <Content Include="Areas\AreaRestrita\Views\Usuario\Perfil.cshtml" />
     <Content Include="pessoal\imagens\Thumbs.db" />
+    <Content Include="Areas\AreaRestrita\Views\Grupo\Cadastro.cshtml" />
+    <Content Include="Areas\AreaRestrita\Views\Grupo\Consulta.cshtml" />
+    <Content Include="Areas\AreaRestrita\Views\Usuario\Cadastro.cshtml" />
+    <Content Include="Areas\AreaRestrita\Views\Usuario\Consulta.cshtml" />
     <None Include="scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="scripts\arcnet.simple.mask.js" />
     <Content Include="scripts\arcnet.simple.mask.min.js" />
@@ -208,7 +212,9 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\AreaRestrita\AreaRestritaAreaRegistration.cs" />
+    <Compile Include="Areas\AreaRestrita\Controllers\GrupoController.cs" />
     <Compile Include="Areas\AreaRestrita\Controllers\UsuarioController.cs" />
+    <Compile Include="Areas\AreaRestrita\Models\GrupoViewModelConsulta.cs" />
     <Compile Include="Areas\AreaRestrita\Models\ProjetoViewModelConsulta.cs" />
     <Compile Include="Areas\AreaRestrita\Models\UsuarioViewModelPerfil.cs" />
     <Compile Include="Areas\AreaRestrita\Security\PermissaoProvider.cs" />

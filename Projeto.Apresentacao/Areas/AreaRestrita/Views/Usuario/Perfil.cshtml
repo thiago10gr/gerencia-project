@@ -16,6 +16,44 @@
     </ul>
 
 
+    <script type="text/javascript">
+
+        //função para realizar o cadastro.. 
+        function atualizarPerfil() {
+            //JSON -> Javascript Object Notation 
+            var model = {
+                Nome: $("#nome").val(),
+                Email: $("#email").val(),
+                Telefone: $("#telefone").val(),
+                Celular: $("#celular").val(),
+                DataCadastro: $("#dataCadastro").val(),
+                Ativo: $("#ativo").val(),
+                Perfil: $("#perfil").val()
+            }; //requisição AJAX paa o servidor... 
+            alert(model.Ativo);
+            /*$.ajax({
+                    type: "POST",
+                    url: "/Usuario/AtualizarPerfil",
+                    data: model,
+                    success: function (d) {
+                        $("#mensagem").html(d);
+                     }, error: function (e) {
+                        $("#mensagem").html(e.status);
+                     }
+            });*/
+
+       }; 
+
+            //capturar o conteudo dos campos inseridos na página 
+            $(document).ready(function () { 
+                $("#btnAtualizar").click(function () {
+                    atualizarPerfil(); //executando a função.. 
+                });
+            }); 
+
+    </script>
+
+
     <div class="tab-content">
 
         <div id="menu1" class="tab-pane fade in active">
@@ -69,7 +107,8 @@
                      new
                      {
                          @class = "form-control",
-                         @placeholder = "Digite aqui"
+                         @placeholder = "Digite aqui",
+                         id = "nome"
                      })
 
                      <br />
@@ -79,7 +118,8 @@
                      new
                      {
                          @class = "form-control",
-                         @placeholder = "Digite aqui"
+                         @placeholder = "Digite aqui",
+                         id = "email"
                      })
 
                      <br />
@@ -89,7 +129,8 @@
                      new
                      {
                          @class = "form-control sp_celphones",
-                         @placeholder = "Digite aqui"
+                         @placeholder = "Digite aqui",
+                         id = "telefone"
                      })
 
                      <br />
@@ -99,7 +140,8 @@
                      new
                      {
                          @class = "form-control sp_celphones",
-                         @placeholder = "Digite aqui"
+                         @placeholder = "Digite aqui",
+                         id = "celular"
                      })
 
                      <br />
@@ -109,7 +151,8 @@
                      new
                      {
                          @class = "form-control",
-                         @readonly = "readonly"
+                         @readonly = "readonly",
+                         id = "dataCadastro"
                      })
 
                      <br />
@@ -119,13 +162,13 @@
 
                 <div class="col-md-4">
 
-         
                      @Html.LabelFor(model => model.Ativo)
                      @Html.EnumDropDownListFor(model => model.Ativo,
                      "- Escolha uma Opção -",
                      new
                      {
-                         @class = "form-control"
+                         @class = "form-control",
+                         id = "ativo"
                      })
 
                     <br />
@@ -135,7 +178,8 @@
                      "- Escolha uma Opção -",
                      new
                      {
-                         @class = "form-control"
+                         @class = "form-control",
+                         id = "perfil"
                      })
 
                      <br />
@@ -146,7 +190,8 @@
                          "- Escolha uma Opção -",
                          new
                          {
-                             @class = "form-control"
+                             @class = "form-control",
+                             id = "grupo"
                          })
 
                      <br />
@@ -155,7 +200,8 @@
                      @Html.PasswordFor(model => model.Senha,
                      new
                      {
-                         @class = "form-control"
+                         @class = "form-control",
+                         id = "senha"
                      })
 
                      <br />
@@ -164,7 +210,8 @@
                      @Html.PasswordFor(model => model.ReSenha,
                      new
                      {
-                         @class = "form-control"
+                         @class = "form-control",
+                         id = "reSenha"
                      })
 
                      <br />
@@ -221,7 +268,7 @@
 
     <div class="row">
         <div class="col-md-4">
-            <input type="submit" value="Salvar" class="btn btn-primary" />
+            <input type="button" value="Salvar" class="btn btn-primary" id="btnAtualizar"/>
         </div>
     </div>
 

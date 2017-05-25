@@ -46,6 +46,19 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
             return View();
         }
 
+        [PermissoesFiltro(Roles = "Administrador")]
+        public ActionResult Cadastro()
+        {
+            return View();
+        }
+
+        [PermissoesFiltro(Roles = "Administrador")]
+        public ActionResult Consulta()
+        {
+            return View();
+        }
+
+
         [PermissoesFiltro(Roles = "Administrador, Gerente, Colaborador")]
         public ActionResult Perfil()
         {
@@ -55,23 +68,24 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
         private UsuarioViewModelPerfil CarregarDadosUsuario()
         {
             //obtendo usuario da sessao
-            Usuario usuarioSessao = (Usuario)Session["usuario"];
+            Usuario usuarioSessao = (Usuario)Session["usuario"];
+
             Usuario u = appUsuario.ObterPorId(usuarioSessao.IdUsuario);
 
-            UsuarioViewModelPerfil model = new UsuarioViewModelPerfil();
-
-            model.ListagemGrupos = new List<SelectListItem>();
-
-            model.IdUsuario = u.IdUsuario;
-            model.Nome = u.Nome;
-            model.Email = u.Email;
-            model.Telefone = u.Telefone;
-            model.Celular = u.Celular;
-            model.DataCadastro = u.DataCadastro;
-            model.Avatar = u.Foto;
-            model.IdGrupo = u.IdGrupo;
-            model.Ativo = u.Ativo;
-            model.Perfil = u.Perfil;
+            UsuarioViewModelPerfil model = new UsuarioViewModelPerfil()
+            {
+                IdUsuario = u.IdUsuario,
+                Nome = u.Nome,
+                Email = u.Email,
+                Telefone = u.Telefone,
+                Celular = u.Celular,
+                DataCadastro = u.DataCadastro,
+                Avatar = u.Foto,
+                IdGrupo = u.IdGrupo,
+                Ativo = u.Ativo,
+                Perfil = u.Perfil,
+                ListagemGrupos = new List<SelectListItem>()
+            };
 
             //listar todos os grupos ativos
             foreach (Grupo g in appGrupo.ListarAtivos())
@@ -113,7 +127,7 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
         }
 
         [HttpPost]
-        public ActionResult Perfil(UsuarioViewModelPerfil model)
+        public JsonResult AtualizarPerfil(UsuarioViewModelPerfil model)
         {
             if (ModelState.IsValid)
             {
@@ -137,7 +151,6 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
                     //verifica se foi selecionado algum projeto na tela de edicao de perfil
                     if (Request.Form.GetValues("projetos") != null)
                     {
-
                         //obtendo os ids dos projetos selecionados na tela de perfil
                         foreach (var idProjeto in Request.Form.GetValues("projetos"))
                         {
@@ -156,9 +169,9 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
                         byte[] appData = new byte[model.Foto.ContentLength + 1];
                         stream.Read(appData, 0, model.Foto.ContentLength);
                         u.Foto = appData;
-                        //para exibir na tela
+                        //exibir na tela
                         model.Avatar = u.Foto;
-                    }
+                    } 
 
                     appUsuario.Atualizar(u);
 
@@ -173,7 +186,8 @@ namespace Projeto.Apresentacao.Areas.AreaRestrita.Controllers
                 }
             }
 
-            return View(CarregarDadosUsuario());
+            return Json(CarregarDadosUsuario());
+            //return View(CarregarDadosUsuario());
         }
     }
 }
